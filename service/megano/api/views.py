@@ -335,7 +335,13 @@ def signIn(request):
 			return HttpResponse(status=500)
 
 def signUp(request):
-	user = User.objects.create_user("mir232", "lennon@thebeatles.com", "pass232")
+	# user = User.objects.create_user("mir232", "lennon@thebeatles.com", "pass232")
+	body = json.loads(request.body)
+	print(body)
+	username = body['name']
+	loginname = body['username']
+	password = body['password']
+	user = User.objects.create_user(loginname,'',password)
 	user.save()
 	return HttpResponse(status=200)
 
