@@ -5,14 +5,13 @@ ENV PYTHONUNBUFFERED=1
 
 COPY requirements.txt /temp/requirements.txt
 COPY service /service
-WORKDIR /service
+WORKDIR /service/megano
 EXPOSE 8000
 
 # upgrade pip
 RUN pip install --upgrade pip
 
 RUN pip3 install -r /temp/requirements.txt
-
 
 RUN adduser --disabled-password service-user
 

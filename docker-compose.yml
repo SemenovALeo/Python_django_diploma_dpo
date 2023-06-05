@@ -9,3 +9,5 @@ services:
 
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
+      sh -c "python setup.py sdist"
+      sh -c "pip3 install diploma-frontend/dist/diploma-frontend-0.6.tar.gz"
