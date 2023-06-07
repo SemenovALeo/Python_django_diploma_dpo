@@ -5,6 +5,9 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
+from user_profile.models import Profile
+from rest_framework import status
+from rest_framework.response import Response
 
 User = get_user_model()
 
@@ -338,12 +341,22 @@ def signUp(request):
 	# user = User.objects.create_user("mir232", "lennon@thebeatles.com", "pass232")
 	body = json.loads(request.body)
 	print(body)
-	username = body['name']
-	loginname = body['username']
+	username = body['username']
+	name = body['name']
 	password = body['password']
-	user = User.objects.create_user(loginname,'',password)
-	user.save()
-	return HttpResponse(status=200)
+	try:
+		user = User.objects.create_user(username, '', password)
+		Profile.objects.create(user=user)
+		user.first_name = name
+		user.save()
+		# user = authenticate(request, username=username, password=password)
+		if user is not None:
+			login(request, user)
+
+		return Response(status=status.HTTP_201_CREATED)
+	except Exception:
+		return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 def signOut(request):
 	logout(request)
