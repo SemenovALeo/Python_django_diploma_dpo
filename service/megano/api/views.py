@@ -432,25 +432,26 @@ def productReviews(request, id):
 	return JsonResponse(data, safe=False)
 
 def profile(request):
+	print(request.user.profile.avatar)
 	if(request.method == 'GET'):
 		data = {
-			"fullName": "Annoying Orange",
-			"email": "no-reply@mail.ru",
-			"phone": "88002000600",
+			"fullName": request.user.username,
+			"email": request.user.email,
+			"phone": request.user.profile.phone,
 			"avatar": {
-				"src": "https://proprikol.ru/wp-content/uploads/2020/12/kartinki-ryabchiki-14.jpg",
-				"alt": "hello alt",
+				"src": "request.user.profile.avatar",
+				# "alt": "hello alt",
 			}
 		}
 		return JsonResponse(data)
 
 	elif(request.method == 'POST'):
 		data = {
-			"fullName": "Annoying Green",
-			"email": "no-reply@mail.ru",
-			"phone": "88002000600",
+			"fullName": request.user.username,
+			"email": request.user.email,
+			"phone": request.user.profile.phone,
 			"avatar": {
-				"src": "https://proprikol.ru/wp-content/uploads/2020/12/kartinki-ryabchiki-14.jpg",
+				"src": "request.user.profile.avatar",
 				"alt": "hello alt",
 			}
 		}
