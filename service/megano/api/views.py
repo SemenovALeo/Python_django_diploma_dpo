@@ -5,6 +5,7 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
+from django.template.defaulttags import url
 from user_profile.models import Profile
 from rest_framework import status
 from rest_framework.response import Response
@@ -432,15 +433,14 @@ def productReviews(request, id):
 	return JsonResponse(data, safe=False)
 
 def profile(request):
-	print(request.user.profile.avatar)
 	if(request.method == 'GET'):
 		data = {
 			"fullName": request.user.username,
 			"email": request.user.email,
 			"phone": request.user.profile.phone,
 			"avatar": {
-				"src": "request.user.profile.avatar",
-				# "alt": "hello alt",
+				"src": str(request.user.profile.avatar.url),
+				"alt": "hello alt",
 			}
 		}
 		return JsonResponse(data)
@@ -451,7 +451,7 @@ def profile(request):
 			"email": request.user.email,
 			"phone": request.user.profile.phone,
 			"avatar": {
-				"src": "request.user.profile.avatar",
+				"src": str(request.user.profile.avatar.url),
 				"alt": "hello alt",
 			}
 		}
