@@ -5,10 +5,6 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
-from django.template.defaulttags import url
-from user_profile.models import Profile
-from rest_framework import status
-from rest_framework.response import Response
 
 User = get_user_model()
 
@@ -339,25 +335,9 @@ def signIn(request):
 			return HttpResponse(status=500)
 
 def signUp(request):
-	# user = User.objects.create_user("mir232", "lennon@thebeatles.com", "pass232")
-	body = json.loads(request.body)
-	print(body)
-	username = body['username']
-	name = body['name']
-	password = body['password']
-	try:
-		user = User.objects.create_user(username, '', password)
-		Profile.objects.create(user=user)
-		user.first_name = name
-		user.save()
-		# user = authenticate(request, username=username, password=password)
-		if user is not None:
-			login(request, user)
-
-		return Response(status=status.HTTP_201_CREATED)
-	except Exception:
-		return Response(status=status.HTTP_400_BAD_REQUEST)
-
+	user = User.objects.create_user("mir232", "lennon@thebeatles.com", "pass232")
+	user.save()
+	return HttpResponse(status=200)
 
 def signOut(request):
 	logout(request)
@@ -435,11 +415,11 @@ def productReviews(request, id):
 def profile(request):
 	if(request.method == 'GET'):
 		data = {
-			"fullName": request.user.username,
-			"email": request.user.email,
-			"phone": request.user.profile.phone,
+			"fullName": "Annoying Orange",
+			"email": "no-reply@mail.ru",
+			"phone": "88002000600",
 			"avatar": {
-				"src": str(request.user.profile.avatar.url),
+				"src": "https://proprikol.ru/wp-content/uploads/2020/12/kartinki-ryabchiki-14.jpg",
 				"alt": "hello alt",
 			}
 		}
@@ -447,11 +427,11 @@ def profile(request):
 
 	elif(request.method == 'POST'):
 		data = {
-			"fullName": request.user.username,
-			"email": request.user.email,
-			"phone": request.user.profile.phone,
+			"fullName": "Annoying Green",
+			"email": "no-reply@mail.ru",
+			"phone": "88002000600",
 			"avatar": {
-				"src": str(request.user.profile.avatar.url),
+				"src": "https://proprikol.ru/wp-content/uploads/2020/12/kartinki-ryabchiki-14.jpg",
 				"alt": "hello alt",
 			}
 		}
