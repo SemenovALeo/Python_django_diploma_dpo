@@ -1,1 +1,4 @@
 .idea
+service/megano/db.sqlite3
+service/megano/uploads
+/service/megano/uploads/
