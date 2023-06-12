@@ -5,6 +5,13 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from user_profile.models import Profile
+
+import user_profile.views
 
 User = get_user_model()
 
@@ -322,7 +329,9 @@ def orders(request):
 		]
 		return JsonResponse(data, safe=False)
 
+
 def signIn(request):
+	# user_profile.views.SignInView()
 	if request.method == "POST":
 		body = json.loads(request.body)
 		username = body['username']
@@ -335,9 +344,23 @@ def signIn(request):
 			return HttpResponse(status=500)
 
 def signUp(request):
-	user = User.objects.create_user("mir232", "lennon@thebeatles.com", "pass232")
-	user.save()
-	return HttpResponse(status=200)
+	# user = User.objects.create_user("mir232", "lennon@thebeatles.com", "pass232")
+	body = json.loads(request.body)
+	username = body['username']
+	name = body['name']
+	password = body['password']
+	try:
+		user = User.objects.create_user(username, '', password)
+		Profile.objects.create(user=user)
+		user.first_name = name
+		user.save()
+		# user = authenticate(request, username=username, password=password)
+		if user is not None:
+			login(request, user)
+
+		return Response(status=status.HTTP_201_CREATED)
+	except Exception:
+		return Response(status=status.HTTP_400_BAD_REQUEST)
 
 def signOut(request):
 	logout(request)
@@ -413,29 +436,31 @@ def productReviews(request, id):
 	return JsonResponse(data, safe=False)
 
 def profile(request):
-	if(request.method == 'GET'):
+	if (request.method == 'GET'):
 		data = {
-			"fullName": "Annoying Orange",
-			"email": "no-reply@mail.ru",
-			"phone": "88002000600",
+			"fullName": request.user.username,
+			"email": request.user.email,
+			"phone": request.user.profile.phone,
 			"avatar": {
-				"src": "https://proprikol.ru/wp-content/uploads/2020/12/kartinki-ryabchiki-14.jpg",
+				"src": str(request.user.profile.avatar.url) if request.user.profile.avatar else "",
 				"alt": "hello alt",
 			}
 		}
 		return JsonResponse(data)
 
-	elif(request.method == 'POST'):
-		data = {
-			"fullName": "Annoying Green",
-			"email": "no-reply@mail.ru",
-			"phone": "88002000600",
-			"avatar": {
-				"src": "https://proprikol.ru/wp-content/uploads/2020/12/kartinki-ryabchiki-14.jpg",
-				"alt": "hello alt",
-			}
-		}
-		return JsonResponse(data)
+	# elif (request.method == 'POST'):
+	#
+	# 	data = {
+	# 		"fullName": request.user.username,
+	# 		"email": request.user.email,
+	# 		"phone": request.user.profile.phone,
+	# 		"avatar": {
+	# 			"src": str(request.user.profile.avatar.url) if request.user.profile.avatar else "",
+	# 			"alt": "hello alt",
+	# 		}
+	# 	}
+	#
+	# 	return JsonResponse(data)
 
 	return HttpResponse(status=500)
 
