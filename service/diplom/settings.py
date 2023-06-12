@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'diploma-frontend.frontend.apps',
-    'myauth',
 ]
 
 MIDDLEWARE = [

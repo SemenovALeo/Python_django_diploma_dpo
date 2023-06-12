@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("diploma-frontend.frontend.urls")),
     path("api/", include("user_profile.urls")),
+    path("api/", include("shop.urls")),
     path("api/", include("api.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

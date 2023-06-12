@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'diploma-frontend.frontend',
     'api',
     'user_profile',
+    'shop',
 ]
 
 MIDDLEWARE = [
