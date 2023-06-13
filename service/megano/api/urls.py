@@ -5,7 +5,7 @@ urlpatterns = [
     path('banners', views.banners),
     path('categories', views.categories),
     path('catalog', views.catalog),
-    # path('products/popular', views.productsPopular), работа
+    path('products/popular', views.productsPopular),
     path('products/limited', views.productsLimited),
     path('sales', views.sales),
     path('basket', views.basket),

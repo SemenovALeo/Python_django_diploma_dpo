@@ -23,7 +23,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=255)
     phone = models.IntegerField('телефон', max_length=11, null=True, blank=True)
-    avatar = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='profiles', null=False, default=None)
+    avatar = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='profiles', null=True, blank=True, default=None)
 
     class Meta:
         verbose_name = 'Профиль'
