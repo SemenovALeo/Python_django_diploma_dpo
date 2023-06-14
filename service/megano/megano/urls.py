@@ -24,6 +24,8 @@ urlpatterns = [
     path("", include("diploma-frontend.frontend.urls")),
     path("api/", include("user_profile.urls")),
     path("api/", include("catalog.urls")),
+    path("api/", include("orders.urls")),
+    path("api/", include("cart.urls")),
     path("api/", include("api.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
